@@ -1,0 +1,14 @@
+# Python Cache
+__pycache__
+#.pyc
+
+# Databases
+course_data.db
+course_sniper.db
+
+# Logs
+LOGS.txt
+everything.txt
+
+# Secret keys
+secret_key.py
