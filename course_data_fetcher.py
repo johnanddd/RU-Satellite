@@ -349,39 +349,173 @@ def main():
     }
 
     subject_numbers = [
-        "010", "011", "013", "014", "015",
-        "016", "019", "020", "035", "047",
-        "050", "067", "070", "074", "078",
-        "080", "081", "082", "090", "098",
-        "115", "117", "119", "122", "125",
-        "126", "136", "140", "146", "155",
-        "158", "160", "165", "170", "175",
-        "180", "185", "190", "192", "193",
-        "195", "198", "202", "203", "206",
-        "207", "216", "219", "220", "300",
-        "351", "354", "355", "356", "358",
-        "359", "364", "370", "373", "374",
-        "375", "377", "381", "382", "390",
-        "400", "420", "440", "447", "450",
-        "460", "470", "489", "490", "501",
-        "505", "506", "508", "510", "512",
-        "522", "533", "540", "547", "550",
-        "554", "556", "557", "558", "560",
-        "563", "565", "567", "574", "575",
-        "580", "590", "595", "607", "615",
-        "620", "624", "628", "630", "635",
-        "640", "650", "652", "660", "667",
-        "670", "680", "685", "691", "694",
-        "700", "701", "705", "709", "713",
-        "715", "718", "720", "721", "723",
-        "725", "730", "745", "750", "775",
-        "776", "787", "790", "810", "830",
-        "832", "833", "840", "843", "851",
-        "860", "888", "902", "904", "910",
-        "920", "940", "955", "959", "960",
-        "965", "966", "971", "973", "988",
-        "991"
-    ]
+        "907", # Academic and Student Development
+        "010", # Accounting
+        "011", # Administrative Studies
+        "016", # African Studies
+        "013", # African, Middle Eastern, and South Asian Languages and Literatures
+        "014", # Africana Studies
+        "019", # Agricultural Business and Food Systems
+        "035", # Agricultural and Natural Resource Management
+        "020", # Agriculture and Food Systems
+        "047", # Alcohol Studies
+        "050", # American Studies
+        "067", # Animal Science
+        "070", # Anthropology
+        "074", # Arabic Languages
+        "078", # Armenian
+        "080", # Art
+        "081", # Art
+        "082", # Art History
+        "090", # Arts and Sciences
+        "098", # Asian Studies
+        "115", # Biochemistry
+        "117", # Bioenvironmental Engineering
+        "119", # Biological Sciences
+        "122", # Biomathematics
+        "125", # Biomedical Engineering
+        "126", # Biotechnology
+        "136", # Business Analytics and Information Technology
+        "140", # Business Law
+        "146", # Cell Biology and Neuroscience
+        "158", # Chemical Biology
+        "155", # Chemical and Biochemical Engineering
+        "160", # Chemistry
+        "165", # Chinese
+        "175", # Cinema Studies
+        "170", # City and Regional Planning
+        "180", # Civil and Environmental Engineering
+        "190", # Classics
+        "185", # Cognitive Science
+        "192", # Communication
+        "189", # Communication and Media Studies
+        "193", # Community Health Outreach
+        "195", # Comparative Literature
+        "198", # Computer Science
+        "202", # Criminal Justice
+        "203", # Dance
+        "206", # Dance
+        "207", # Dance Education
+        "219", # Data Science
+        "216", # Ecology, Evolution and Natural Resources
+        "220", # Economics
+        "300", # Education
+        "364", # Educational Opportunity Fund
+        "332", # Electrical and Computer Engineering
+        "355", # English - Composition and Writing
+        "351", # English - Creative Writing
+        "354", # English - Film Studies
+        "358", # English - Literature
+        "359", # English - Theories and Methods
+        "356", # English as a Second Language
+        "370", # Entomology
+        "382", # Entrepreneurship
+        "573", # Environmental Planning and Design
+        "374", # Environmental Policy, Institutions and Behavior
+        "375", # Environmental Sciences
+        "381", # Environmental Studies
+        "015", # Environmental and Biological Sciences
+        "373", # Environmental and Business Economics
+        "522", # Ethics in Business Environment
+        "360", # European Studies
+        "377", # Exercise Science
+        "211", # Filmmaking
+        "390", # Finance
+        "400", # Food Science
+        "420", # French
+        "440", # General Engineering
+        "447", # Genetics
+        "450", # Geography
+        "460", # Geological Sciences
+        "470", # German
+        "490", # Greek
+        "489", # Greek, Modern
+        "501", # Health Administration
+        "505", # Hindi
+        "510", # History
+        "508", # History - Africa, Asia, Latin America
+        "512", # History - American
+        "506", # History - General/Comparative
+        "525", # Honors Program
+        "533", # Human Resource Management
+        "540", # Industrial and Systems Engineering
+        "547", # Information Technology and Informatics
+        "557", # Interdisciplinary - Mason Gross
+        "554", # Interdisciplinary Studies
+        "556", # Interdisciplinary Studies - Arts and Sciences
+        "558", # International Studies
+        "560", # Italian
+        "565", # Japanese
+        "563", # Jewish Studies
+        "567", # Journalism and Media Studies
+        "574", # Korean
+        "575", # Labor Studies
+        "550", # Landscape Architecture
+        "580", # Latin
+        "590", # Latin American Studies
+        "595", # Latino and Hispanic Caribbean Studies
+        "607", # Leadership Skills
+        "615", # Linguistics
+        "620", # Management
+        "624", # Management and Work
+        "628", # Marine Sciences
+        "630", # Marketing
+        "635", # Materials Science and Engineering
+        "640", # Mathematics
+        "650", # Mechanical and Aerospace Engineering
+        "652", # Medical Ethics and Policy
+        "660", # Medical Technology
+        "667", # Medieval Studies
+        "670", # Meteorology
+        "680", # Microbiology
+        "685", # Middle Eastern and Islamic Studies
+        "690", # Military Education, Air Force
+        "691", # Military Education, Army
+        "692", # Military Education, Navy
+        "694", # Molecular Biology and Biochemistry
+        "700", # Music
+        "701", # Music, Applied
+        "705", # Nursing
+        "709", # Nutritional Sciences
+        "713", # Organizational Leadership
+        "723", # Persian
+        "715", # Pharmaceutical Chemistry
+        "721", # Pharmaceutics
+        "718", # Pharmacology, Cellular and Molecular
+        "720", # Pharmacy
+        "725", # Pharmacy Practice and Administration
+        "730", # Philosophy
+        "745", # Physician Assistant
+        "750", # Physics
+        "776", # Plant Science
+        "775", # Policy, Health, and Administration
+        "787", # Polish
+        "790", # Political Science
+        "810", # Portuguese
+        "830", # Psychology
+        "843", # Public Administration and Management
+        "832", # Public Health
+        "833", # Public Policy
+        "851", # Real Estate
+        "840", # Religion
+        "860", # Russian
+        "902", # SEBS Internship
+        "888", # Sexualities Studies
+        "904", # Social Justice
+        "910", # Social Work
+        "920", # Sociology
+        "940", # Spanish
+        "955", # Sport Management
+        "960", # Statistics
+        "959", # Study Abroad
+        "799", # Supply Chain and Marketing Science
+        "965", # Theater
+        "966", # Theater Arts
+        "973", # Turkish
+        "971", # Urban Planning and Design
+        "988", # Women's, Gender, and Sexuality Studies
+        "991", # World Languages
+]
 
     session = requests.Session()
     session.headers.update(headers)
