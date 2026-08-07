@@ -21,7 +21,8 @@ def send_course_open_email(email: str, section_index: str):
         <p>Section <strong>{section_index}</strong> is currently open.</p>
         <p>Register quickly before the seat is taken.</p>
     """,
-    })
+    }
+    )
 
 
 
