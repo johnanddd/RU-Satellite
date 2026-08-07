@@ -1,7 +1,8 @@
 # -----------------
 # email_services.py
 import resend
-from secret_key import RESEND_API_KEY
+import os
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 
 
 def send_course_open_email(email: str, section_index: str):
