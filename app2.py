@@ -14,10 +14,6 @@ from database import add_subscription, create_database
 from threading import Thread
 from coursesniper5 import start_course_sniper
 
-# makes it so app2 also runs coursesniper5.py in the background when the server starts
-def startup():
-    Thread(target=start_course_sniper, daemon=True).start()
-
 
 # TO START:
 # python -m uvicorn app2:app --reload
@@ -26,6 +22,12 @@ def startup():
 
 app = FastAPI()
 create_database()
+
+# makes it so app2 also runs coursesniper5.py in the background when the server starts
+def startup():
+    Thread(target=start_course_sniper, daemon=True).start()
+
+startup()
 
 
 COURSE_DATABASE = "course_data.db"
