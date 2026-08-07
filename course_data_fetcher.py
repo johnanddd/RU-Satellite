@@ -274,34 +274,23 @@ def display_section_info(section_entered):
 def main():
 
     cookies = {
-        "JSESSIONID":
-            "6CC886CAF822C780290965CB79B5BBB9.jvm1-tc8",
-        "_ga_M6FS8HG1PG":
-            "GS2.1.s1757883469$o3$g0$t1757883469$j60$l0$h0",
-        "fpestid":
-            "OC6tK_zDxxEZIdtYl-8oeVMqSdk4BZQdThYT5669FOV8efFVSuPRAhnaNDw4J4kgvWKL8Q",
-        "_cc_id":
-            "958a5c11523365b95ebbb93f248d528a",
-        "_gcl_au":
-            "1.1.1265539514.1779414837",
-        "_ga_287D0ZK0WR":
-            "GS2.2.s1780851491$o1$g1$t1780853707$j60$l0$h0",
-        "_ga":
-            "GA1.1.722274748.1755291756",
-        "_clck":
-            "gfq8ue%5E2%5Eg7t%5E0%5E2333",
-        "_ga_36BMR3ZE98":
-            "GS2.1.s1784322840$o3$g1$t1784323047$j60$l0$h0",
-        "_ga_EVHZ2DN4EF":
-            "GS2.1.s1784322840$o3$g1$t1784323047$j60$l0$h0",
-        "EssUserTrk":
-            "24c3332b.656ecbe45673d",
-        "sims-webreg":
-            "1156324780.20480.0000",
-        "_ga_VGJS06GBF3":
-            "GS2.1.s1784508504$o1$g0$t1784508504$j60$l0$h0",
-        "sims-csp":
-            "1156324780.20480.0000",
+    'JSESSIONID': '7149818E6CABFBB7392D9BA986C1BC60.jvm1-tc8',
+    '_ga_M6FS8HG1PG': 'GS2.1.s1757883469$o3$g0$t1757883469$j60$l0$h0',
+    'fpestid': 'OC6tK_zDxxEZIdtYl-8oeVMqSdk4BZQdThYT5669FOV8efFVSuPRAhnaNDw4J4kgvWKL8Q',
+    '_cc_id': '958a5c11523365b95ebbb93f248d528a',
+    '_gcl_au': '1.1.1265539514.1779414837',
+    '_ga_287D0ZK0WR': 'GS2.2.s1780851491$o1$g1$t1780853707$j60$l0$h0',
+    '_ga': 'GA1.1.722274748.1755291756',
+    '_ga_ZYY85J4EN8': 'GS2.1.s1785013157$o2$g0$t1785013157$j60$l0$h0',
+    '_ga_DVCN4VQT8D': 'GS2.1.s1785974921$o1$g0$t1785974923$j58$l0$h0',
+    '_clck': 'gfq8ue%5E2%5Eg8d%5E0%5E2333',
+    '_ga_0335RGQXJE': 'GS2.1.s1785979273$o3$g0$t1785979273$j60$l0$h0',
+    '_ga_36BMR3ZE98': 'GS2.1.s1785965817$o4$g1$t1785979277$j59$l0$h0',
+    '_ga_EVHZ2DN4EF': 'GS2.1.s1785979276$o6$g1$t1785979277$j59$l0$h0',
+    '_ga_VGJS06GBF3': 'GS2.1.s1785984788$o6$g0$t1785984788$j60$l0$h0',
+    'EssUserTrk': 'ec1b06cf.6586b2591f7b6',
+    'sims-webreg': '1156324780.20480.0000',
+    'sims-csp': '1122770348.20480.0000',
     }
 
     headers = {
