@@ -200,7 +200,7 @@ def sleep_crash_delay():
     time.sleep(retry_time)
 
 
-def main():
+def start_course_sniper():
     
     #region Random Variables
     params = {
@@ -280,7 +280,7 @@ def main():
         time.sleep(wait_time)
 
 if __name__ == "__main__":
-    main()
+    start_course_sniper()
 
 
 
