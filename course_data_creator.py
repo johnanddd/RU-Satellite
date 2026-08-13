@@ -48,6 +48,7 @@ def get_csp_info(subject_number, params, session):
         )
         return None
 
+# add camden and newark sections
 
 # This function takes the messy JSON and stores
 # organized information for each section.

@@ -210,7 +210,7 @@ def start_course_sniper():
 
     api_ping_count = 0
     response_time = 0
-    default_sleep = 5  # seconds
+    default_sleep = 5.5  # seconds
     play_sound = False
     run_main_loop = True
     #endregion

@@ -1,34 +1,68 @@
 # -----------------
 # email_services.py
-import resend
 import os
-RESEND_API_KEY = os.getenv("RESEND_API_KEY")
+import smtplib
+from datetime import datetime
 
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+from secret_key import SMTP_EMAIL, SMTP_PASSWORD
+from course_data_search import find_section
+
+SMTP_EMAIL = os.getenv("SMTP_EMAIL", SMTP_EMAIL)
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", SMTP_PASSWORD)
 
 def send_course_open_email(email: str, section_index: str):
 
-    resend.api_key = RESEND_API_KEY
+    try:
+        section = find_section(section_index)
 
-    if not resend.api_key:
-        raise RuntimeError("RESEND_API_KEY is not configured.")
+        course_code = section["course_code"]
+        course_title = section["course_title"]
+        instructors = section["instructors"]
 
-    resend.Emails.send({
-    "from": "Rutgers Course Sniper <onboarding@resend.dev>",
-    "to": [email],
-    "subject": f"Section {section_index} is open!",
-    "html": f"""
-        <h2>A Rutgers section just opened</h2>
-        <p>Section <strong>{section_index}</strong> is currently open.</p>
-        <p>Register quickly before the seat is taken.</p>
-    """,
-    }
-    )
+        time_sent = datetime.now().strftime("%b %d, %Y at %I:%M %p")
+
+        message = MIMEMultipart()
+
+        message["From"] = SMTP_EMAIL
+        message["To"] = email
+        message["Subject"] = f"SECTION OPENING"
+
+        html = f"""
+        <h2>🚨 A section has opened! 🚨</h2>
+        <p>{course_title} ({course_code})</p>
+        <p>Section Index: {section_index}</p>
+        <p>REGISTER HERE: https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=92026&indexList={section_index} </p>
+        <p>Time sent: {time_sent}</p>
+        <hr>
+        <p>If it closes, we'll notifiy you again when it opens.</p>
+        <p>🛰️Thank you for using RU Satellite!🛰️</p>
+        """
+
+        message.attach(MIMEText(html, "html"))
+
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()
+        server.login(SMTP_EMAIL, SMTP_PASSWORD)
+
+        server.sendmail(
+            SMTP_EMAIL,
+            email,
+            message.as_string()
+        )
+
+        server.quit()
+
+
+    except Exception as error:
+        print(f"Failed to send email to {email}: {error}")
 
 
 
 if __name__ == "__main__": # test script
-    send_course_open_email("johnanddd2007@gmail.com", "08841")
+    send_course_open_email("johnanddd2007@gmail.com", "17387")
     print("Email sent!")
-
 
 
