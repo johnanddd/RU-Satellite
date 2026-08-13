@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}
+RU Satellite
+{% endblock %}
+
+{% block content %}
+
+<section class="hero-section">
+
+    <div class="hero-card">
+
+        <div class="hero-badge">
+            Rutgers Course Monitoring
+        </div>
+
+        <h1 class="hero-title">
+            Never miss an open section.
+        </h1>
+
+        <p class="hero-subtitle">
+            Enter your email and RU Satellite will load your watchlist
+            or start a new one.
+        </p>
+
+        {% if error %}
+        <div
+            class="message error-message"
+            role="alert"
+        >
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form
+            action="/dashboard"
+            method="post"
+            id="email-form"
+            class="email-form"
+        >
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email address
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value="{{ email or '' }}"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+            <div
+                class="hidden-field"
+                aria-hidden="true"
+            >
+                <label for="website">
+                    Website
+                </label>
+
+                <input
+                    type="text"
+                    id="website"
+                    name="website"
+                    autocomplete="off"
+                    tabindex="-1"
+                >
+            </div>
+
+            <label class="human-check">
+
+                <input
+                    type="checkbox"
+                    id="human_check"
+                    name="human_check"
+                    value="yes"
+                    required
+                >
+
+                <span>
+                    I am a human.
+                </span>
+
+            </label>
+
+            <button
+                type="submit"
+                class="primary-button"
+            >
+                Open Dashboard
+            </button>
+
+        </form>
+
+        <div class="hero-features">
+
+            <div class="feature-item">
+                <span class="feature-icon">
+                    ⚡
+                </span>
+
+                <span>
+                    Fast section lookup
+                </span>
+            </div>
+
+            <div class="feature-item">
+                <span class="feature-icon">
+                    📡
+                </span>
+
+                <span>
+                    Automatic monitoring
+                </span>
+            </div>
+
+            <div class="feature-item">
+                <span class="feature-icon">
+                    ✉️
+                </span>
+
+                <span>
+                    Email alerts
+                </span>
+            </div>
+
+        </div>
+
+        <p class="privacy-note">
+            No password required. Your email is only used for
+            RU Satellite course alerts.
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock %}

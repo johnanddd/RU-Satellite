@@ -1,118 +1,372 @@
-# -----------------
-# database.py
 import sqlite3
+from pathlib import Path
 
-DATABASE_NAME = "course_sniper.db"
 
+# ---------------------------------------------------------
+# Database configuration
+# ---------------------------------------------------------
+
+BASE_DIR = Path(__file__).resolve().parent
+DATABASE_NAME = BASE_DIR / "course_sniper.db"
+
+
+# ---------------------------------------------------------
+# Database setup
+# ---------------------------------------------------------
 
 def create_database():
-    # Open the SQLite database file.
-    # If it doesn't exist yet, SQLite will automatically create it.
-    connection = sqlite3.connect(DATABASE_NAME)
+    """
+    Create the subscriptions table if it does not already exist.
 
-    # Create a cursor so Python can send SQL commands to SQLite.
-    cursor = connection.cursor()
+    Each email represents one RU Satellite account.
+    section_index stores sections still waiting for an alert.
+    notified_sections stores sections that already triggered an alert.
+    """
+    with sqlite3.connect(DATABASE_NAME) as connection:
+        cursor = connection.cursor()
 
-    # Tell SQLite to create a table called "subscriptions"
-    # if it does not already exist.
-    cursor.execute(
-        """
-        CREATE TABLE IF NOT EXISTS subscriptions (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            email TEXT NOT NULL,
-            section_index TEXT NOT NULL,
-            notified_sections TEXT NOT NULL
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS subscriptions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                email TEXT NOT NULL,
+                section_index TEXT NOT NULL DEFAULT '',
+                notified_sections TEXT NOT NULL DEFAULT ''
+            )
+            """
         )
-        """
-    )
 
-    # Save any changes made to the database.
-    connection.commit()
-
-    # Close the database since we're done using it.
-    connection.close()
+        connection.commit()
 
 
-# Only create the database when this file is run directly.
-# (Not when another Python file imports it.)
-if __name__ == "__main__":
-    create_database()
-
+# ---------------------------------------------------------
+# Subscription helpers
+# ---------------------------------------------------------
 
 def get_subscriptions():
+    """
+    Return every subscription.
+
+    The tuple format stays compatible with coursesniper5.py:
+
+    (
+        id,
+        email,
+        section_index,
+        notified_sections
+    )
+    """
     try:
-        # Open the SQLite database.
-        connection = sqlite3.connect(DATABASE_NAME)
+        with sqlite3.connect(DATABASE_NAME) as connection:
+            cursor = connection.cursor()
 
-        # Create a cursor so we can send SQL commands.
-        cursor = connection.cursor()
+            cursor.execute(
+                """
+                SELECT
+                    id,
+                    email,
+                    section_index,
+                    notified_sections
+                FROM subscriptions
+                ORDER BY id ASC
+                """
+            )
 
-        # Go to the table named subscriptions and return the id, email, and section_index columns for every row.
-        cursor.execute(
-            """
-            SELECT id, email, section_index, notified_sections
-            FROM subscriptions
-            """
+            return cursor.fetchall()
+
+    except sqlite3.Error as error:
+        print(
+            "Database error in get_subscriptions(): "
+            f"{error}"
         )
+        return []
 
-        # Fetch every row returned by the SQL query and
-        # store them as a Python list.
-        # Cursor remembers the last thing it fetched. This goes and saves it to a variable
-        subscriptions = cursor.fetchall()
 
-        # Close the database since we're finished reading from it.
-        connection.close()
+def get_subscription_by_email(email):
+    """
+    Return the first subscription row matching an email.
 
-        # Return the list of subscriptions to whatever function called us.
-        return subscriptions
-    except Exception as error:
-        print(f"On get_subscriptions() there was an error accessing the SQL Database: {error}")
+    Email matching is case-insensitive.
+    """
+    email = email.strip().lower()
+
+    try:
+        with sqlite3.connect(DATABASE_NAME) as connection:
+            cursor = connection.cursor()
+
+            cursor.execute(
+                """
+                SELECT
+                    id,
+                    email,
+                    section_index,
+                    notified_sections
+                FROM subscriptions
+                WHERE lower(email) = ?
+                ORDER BY id ASC
+                LIMIT 1
+                """,
+                (email,),
+            )
+
+            return cursor.fetchone()
+
+    except sqlite3.Error as error:
+        print(
+            "Database error in "
+            "get_subscription_by_email(): "
+            f"{error}"
+        )
         return None
 
-def add_subscription(email, section_index, notified_sections=""):
-    try:
-        connection = sqlite3.connect(DATABASE_NAME)
-        cursor = connection.cursor()
 
-        cursor.execute(
-            """
-            INSERT INTO subscriptions (
+def email_exists(email):
+    """
+    Check whether an RU Satellite account already exists.
+    """
+    return get_subscription_by_email(email) is not None
+
+
+def add_subscription(
+    email,
+    section_index,
+    notified_sections="",
+):
+    """
+    Add a new subscription.
+
+    If the email already exists, update the existing account
+    instead of creating another duplicate row.
+    """
+    email = email.strip().lower()
+
+    try:
+        existing = get_subscription_by_email(email)
+
+        if existing:
+            edit_subscription(
                 email,
                 section_index,
-                notified_sections
+                notified_sections,
             )
-            VALUES (?, ?, ?)
-            """,
-            (email, section_index, notified_sections)
+            return True
+
+        with sqlite3.connect(DATABASE_NAME) as connection:
+            cursor = connection.cursor()
+
+            cursor.execute(
+                """
+                INSERT INTO subscriptions (
+                    email,
+                    section_index,
+                    notified_sections
+                )
+                VALUES (?, ?, ?)
+                """,
+                (
+                    email,
+                    section_index,
+                    notified_sections,
+                ),
+            )
+
+            connection.commit()
+
+        print(f"{email} added to RU Satellite.")
+        return True
+
+    except sqlite3.Error as error:
+        print(
+            "Database error in add_subscription(): "
+            f"{error}"
         )
+        return False
 
-        connection.commit()
-        connection.close()
 
-        print(f"{email} added!")
-    except Exception as error:
-        print(f"On add_subscription() there was an error accessing the SQL Database: {error}")
-        return None
+def edit_subscription(
+    email,
+    section_index,
+    notified_sections,
+):
+    """
+    Update the watched and notified sections for an email.
 
-def edit_subscription(email, section_index, notified_sections):
+    This function keeps the same argument order expected by
+    coursesniper5.py.
+    """
+    email = email.strip().lower()
+
     try:
-        connection = sqlite3.connect(DATABASE_NAME)
-        cursor = connection.cursor()
+        with sqlite3.connect(DATABASE_NAME) as connection:
+            cursor = connection.cursor()
 
-        cursor.execute("""
-        UPDATE subscriptions
-        SET section_index = ?,
-            notified_sections = ?
-            WHERE email = ?
-        """, (section_index, notified_sections, email)
+            cursor.execute(
+                """
+                UPDATE subscriptions
+                SET
+                    section_index = ?,
+                    notified_sections = ?
+                WHERE lower(email) = ?
+                """,
+                (
+                    section_index,
+                    notified_sections,
+                    email,
+                ),
+            )
+
+            connection.commit()
+
+            return cursor.rowcount > 0
+
+    except sqlite3.Error as error:
+        print(
+            "Database error in edit_subscription(): "
+            f"{error}"
         )
-
-        connection.commit()
-        connection.close()
-    except Exception as error:
-        print(f"On edit_subscription() there was an error accessing the SQL Database: {error}")
-        return None
+        return False
 
 
+def delete_subscription(email):
+    """
+    Delete an RU Satellite account completely.
+    """
+    email = email.strip().lower()
+
+    try:
+        with sqlite3.connect(DATABASE_NAME) as connection:
+            cursor = connection.cursor()
+
+            cursor.execute(
+                """
+                DELETE FROM subscriptions
+                WHERE lower(email) = ?
+                """,
+                (email,),
+            )
+
+            connection.commit()
+
+            return cursor.rowcount > 0
+
+    except sqlite3.Error as error:
+        print(
+            "Database error in delete_subscription(): "
+            f"{error}"
+        )
+        return False
 
 
+def remove_duplicate_emails():
+    """
+    Clean up duplicate rows created by older versions of
+    the Course Sniper website.
+
+    Sections from duplicate rows are merged so watchlist data
+    is not lost.
+    """
+    subscriptions = get_subscriptions()
+
+    accounts = {}
+
+    for subscription in subscriptions:
+        subscription_id = subscription[0]
+        email = subscription[1].strip().lower()
+
+        waiting = [
+            section.strip()
+            for section in subscription[2].split(",")
+            if section.strip()
+        ]
+
+        notified = [
+            section.strip()
+            for section in subscription[3].split(",")
+            if section.strip()
+        ]
+
+        if email not in accounts:
+            accounts[email] = {
+                "primary_id": subscription_id,
+                "waiting": [],
+                "notified": [],
+                "duplicate_ids": [],
+            }
+        else:
+            accounts[email]["duplicate_ids"].append(
+                subscription_id
+            )
+
+        accounts[email]["waiting"].extend(waiting)
+        accounts[email]["notified"].extend(notified)
+
+    try:
+        with sqlite3.connect(DATABASE_NAME) as connection:
+            cursor = connection.cursor()
+
+            for email, account in accounts.items():
+                waiting = list(
+                    dict.fromkeys(account["waiting"])
+                )
+
+                notified = list(
+                    dict.fromkeys(account["notified"])
+                )
+
+                # Notified wins if old data has a section
+                # stored in both states.
+                waiting = [
+                    section
+                    for section in waiting
+                    if section not in notified
+                ]
+
+                cursor.execute(
+                    """
+                    UPDATE subscriptions
+                    SET
+                        email = ?,
+                        section_index = ?,
+                        notified_sections = ?
+                    WHERE id = ?
+                    """,
+                    (
+                        email,
+                        ", ".join(waiting),
+                        ", ".join(notified),
+                        account["primary_id"],
+                    ),
+                )
+
+                for duplicate_id in account[
+                    "duplicate_ids"
+                ]:
+                    cursor.execute(
+                        """
+                        DELETE FROM subscriptions
+                        WHERE id = ?
+                        """,
+                        (duplicate_id,),
+                    )
+
+            connection.commit()
+
+        return True
+
+    except sqlite3.Error as error:
+        print(
+            "Database error in "
+            "remove_duplicate_emails(): "
+            f"{error}"
+        )
+        return False
+
+
+# ---------------------------------------------------------
+# Run directly
+# ---------------------------------------------------------
+
+if __name__ == "__main__":
+    create_database()
+    remove_duplicate_emails()
+    print("RU Satellite database is ready.")
