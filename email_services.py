@@ -7,11 +7,10 @@ from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from secret_key import SMTP_EMAIL, SMTP_PASSWORD
 from course_data_search import find_section
 
-SMTP_EMAIL = os.getenv("SMTP_EMAIL", SMTP_EMAIL)
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", SMTP_PASSWORD)
+SMTP_EMAIL = os.getenv("SMTP_EMAIL")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 
 def send_course_open_email(email: str, section_index: str):
 
@@ -62,6 +61,7 @@ def send_course_open_email(email: str, section_index: str):
 
 
 if __name__ == "__main__": # test script
+    from secret_key import SMTP_EMAIL, SMTP_PASSWORD
     send_course_open_email("johnanddd2007@gmail.com", "17387")
     print("Email sent!")
 
