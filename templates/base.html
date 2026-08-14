@@ -1,78 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="theme-color"
-        content="#07111f"
-    >
-
-    <title>
-        {% block title %}
-        RU Satellite
-        {% endblock %}
-    </title>
+    <title>{% block title %}RU Satellite{% endblock %}</title>
 
     <link
         rel="stylesheet"
-        href="{{ url_for('static', path='style.css') }}"
+        href="/static/style.css?v=4"
     >
 </head>
 
 <body>
 
-    <div class="page-shell">
+    <header class="site-header">
+        <div class="header-inner">
 
-        <header class="site-header">
+            <a href="/" class="brand">
+                <span class="brand-icon">🛰️</span>
+                <span>RU Satellite</span>
+            </a>
 
-            <div class="site-header-inner">
+        </div>
+    </header>
 
-                <a
-                    href="/"
-                    class="brand"
-                >
-                    <span class="brand-icon">
-                        🛰️
-                    </span>
-
-                    <span class="brand-text">
-                        RU Satellite
-                    </span>
-                </a>
-
-            </div>
-
-        </header>
-
-        <main class="site-main">
-
-            {% block content %}
-            {% endblock %}
-
-        </main>
-
-        <footer class="site-footer">
-
-            <p>
-                Built for Rutgers students.
-            </p>
-
-        </footer>
-
-    </div>
+    <main class="page">
+        {% block content %}{% endblock %}
+    </main>
 
     <script
-        src="{{ url_for('static', path='app.js') }}"
+        src="/static/app.js?v=4"
         defer
     ></script>
 
 </body>
-
 </html>

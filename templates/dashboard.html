@@ -1,292 +1,199 @@
 {% extends "base.html" %}
 
-{% block title %}
-Dashboard | RU Satellite
-{% endblock %}
+{% block title %}Dashboard | RU Satellite{% endblock %}
 
 {% block content %}
 
-<section class="dashboard-section">
+<div
+    class="dashboard"
+    data-dashboard
+    data-email="{{ email }}"
+>
 
-    <div
-        class="dashboard-container"
-        data-dashboard
-        data-email="{{ email }}"
-        data-max-sections="{{ max_sections }}"
-    >
+    <div class="dashboard-heading">
 
-        <div class="dashboard-heading">
+        <div>
+            <h1>Your Watchlist</h1>
 
-            <div>
-                <p class="eyebrow">
-                    Mission Control
-                </p>
+            <p class="subtitle dashboard-subtitle">
+                RU Satellite will email you when a watched section opens.
+            </p>
+        </div>
 
-                <h1>
-                    Your Watchlist
-                </h1>
+        <div class="account-box">
+            <span>{{ email }}</span>
 
-                <p class="dashboard-subtitle">
-                    RU Satellite is monitoring Rutgers sections for
-                    <strong>{{ email }}</strong>
-                </p>
-            </div>
-
-            <a
-                href="/"
-                class="secondary-link"
-                id="change-email"
-            >
+            <a href="/" id="change-email">
                 Change email
             </a>
-
-        </div>
-
-        {% if message %}
-        <div
-            class="message {{ message_type }}-message"
-            role="status"
-        >
-            {{ message }}
-        </div>
-        {% endif %}
-
-        <div
-            id="client-message"
-            class="message"
-            role="status"
-            aria-live="polite"
-        ></div>
-
-        <div class="dashboard-grid">
-
-            <div class="dashboard-panel search-panel">
-
-                <div class="panel-heading">
-
-                    <div>
-                        <p class="panel-label">
-                            Add Section
-                        </p>
-
-                        <h2>
-                            Find a Rutgers section
-                        </h2>
-                    </div>
-
-                    <span class="signal-indicator">
-                        <span class="signal-dot"></span>
-                        Online
-                    </span>
-
-                </div>
-
-                <p class="panel-description">
-                    Enter the five-digit section index from the
-                    Rutgers Schedule of Classes.
-                </p>
-
-                <div class="section-search">
-
-                    <input
-                        type="text"
-                        id="section-search-input"
-                        maxlength="5"
-                        inputmode="numeric"
-                        autocomplete="off"
-                        placeholder="Example: 17704"
-                        aria-label="Five-digit section index"
-                    >
-
-                    <button
-                        type="button"
-                        id="find-section-button"
-                        class="primary-button"
-                    >
-                        Find Section
-                    </button>
-
-                </div>
-
-                <div id="course-result"></div>
-
-            </div>
-
-            <div class="dashboard-panel watchlist-panel">
-
-                <div class="panel-heading">
-
-                    <div>
-                        <p class="panel-label">
-                            Active Tracking
-                        </p>
-
-                        <h2>
-                            Watched Sections
-                        </h2>
-                    </div>
-
-                    <span
-                        id="watch-count"
-                        class="watch-count"
-                    >
-                        {{ watch_count }} / {{ max_sections }}
-                    </span>
-
-                </div>
-
-                <div
-                    id="watchlist-items"
-                    class="watchlist-items"
-                >
-
-                    {% if watched_sections %}
-
-                        {% for section in watched_sections %}
-
-                        <article
-                            class="watchlist-item"
-                            data-section-index="{{ section.registration_index }}"
-                            data-course-code="{{ section.course_code }}"
-                            data-course-title="{{ section.course_title }}"
-                            data-instructors="{{ section.instructors }}"
-                        >
-
-                            <div class="watchlist-item-top">
-
-                                <div>
-                                    <p class="course-code">
-                                        {{ section.course_code }}
-                                    </p>
-
-                                    <h3 class="course-title">
-                                        {{ section.course_title }}
-                                    </h3>
-                                </div>
-
-                                {% if section.notification_sent %}
-                                <span class="status-badge notified">
-                                    Alert sent
-                                </span>
-                                {% else %}
-                                <span class="status-badge monitoring">
-                                    Monitoring
-                                </span>
-                                {% endif %}
-
-                            </div>
-
-                            <div class="course-meta">
-
-                                <span>
-                                    Index
-                                    <strong>
-                                        {{ section.registration_index }}
-                                    </strong>
-                                </span>
-
-                                <span>
-                                    Instructor
-                                    <strong>
-                                        {{ section.instructors }}
-                                    </strong>
-                                </span>
-
-                            </div>
-
-                            <button
-                                type="button"
-                                class="remove-button"
-                                data-remove-section="{{ section.registration_index }}"
-                            >
-                                Remove
-                            </button>
-
-                        </article>
-
-                        {% endfor %}
-
-                    {% else %}
-
-                        <div
-                            id="empty-watchlist"
-                            class="empty-watchlist"
-                        >
-                            <div class="empty-icon">
-                                📡
-                            </div>
-
-                            <h3>
-                                Nothing on radar yet
-                            </h3>
-
-                            <p>
-                                Search for a Rutgers section and add it
-                                to begin monitoring.
-                            </p>
-                        </div>
-
-                    {% endif %}
-
-                </div>
-
-                <form
-                    action="/watchlist"
-                    method="post"
-                    id="watchlist-form"
-                    class="watchlist-form"
-                >
-
-                    <input
-                        type="hidden"
-                        name="email"
-                        value="{{ email }}"
-                    >
-
-                    <input
-                        type="hidden"
-                        name="section_index"
-                        id="section-indexes"
-                        value="{% for section in watched_sections %}{{ section.registration_index }}{% if not loop.last %},{% endif %}{% endfor %}"
-                    >
-
-                    <button
-                        type="submit"
-                        id="save-watchlist-button"
-                        class="primary-button save-button"
-                        {% if watch_count == 0 %}disabled{% endif %}
-                    >
-                        Save Watchlist
-                    </button>
-
-                </form>
-
-            </div>
-
-        </div>
-
-        <div class="dashboard-status-bar">
-
-            <div class="status-item">
-                <span class="status-icon">
-                    ●
-                </span>
-
-                <span>
-                    Monitoring service active
-                </span>
-            </div>
-
-            <div class="status-item">
-                <span>
-                    Maximum {{ max_sections }} sections per watchlist
-                </span>
-            </div>
-
         </div>
 
     </div>
 
-</section>
+    {% if message %}
+        <div
+            id="server-message"
+            class="message {% if message_type == 'error' %}error-message{% else %}success-message{% endif %}"
+        >
+            {{ message }}
+        </div>
+    {% endif %}
+
+    <div
+        id="message"
+        class="message hidden"
+        aria-live="polite"
+    ></div>
+
+    <section class="section-box">
+
+        <h2>Add a section</h2>
+
+        <p class="section-help">
+            Enter the five-digit Rutgers section index.
+        </p>
+
+        <div class="section-search">
+
+            <input
+                type="text"
+                id="section-search-input"
+                maxlength="5"
+                inputmode="numeric"
+                placeholder="Example: 17704"
+                autocomplete="off"
+            >
+
+            <button
+                type="button"
+                id="find-section-button"
+                class="primary-button"
+            >
+                Find Section
+            </button>
+
+        </div>
+
+        <div id="course-result"></div>
+
+    </section>
+
+    <section class="watchlist">
+
+        <div class="watchlist-header">
+
+            <h2>Watched Sections</h2>
+
+            <span
+                id="watch-count"
+                class="watch-count"
+            >
+                {{ watch_count }} / {{ max_sections }}
+            </span>
+
+        </div>
+
+        <div id="watchlist-items">
+
+            {% if watched_sections %}
+
+                {% for section in watched_sections %}
+
+                    <div
+                        class="watchlist-item"
+                        data-existing-section
+                        data-registration-index="{{ section.registration_index }}"
+                        data-course-code="{{ section.course_code }}"
+                        data-course-title="{{ section.course_title }}"
+                        data-instructors="{{ section.instructors }}"
+                    >
+
+                        <div class="course-title">
+                            {{ section.course_title }}
+                        </div>
+
+                        {% if section.course_code %}
+                            <div class="course-code">
+                                {{ section.course_code }}
+                            </div>
+                        {% endif %}
+
+                        <div class="course-detail">
+                            Section {{ section.registration_index }}
+                        </div>
+
+                        <div class="course-detail">
+                            {{ section.instructors }}
+                        </div>
+
+                        {% if section.notification_sent %}
+                            <div class="section-status notified">
+                                Alert already sent
+                            </div>
+                        {% else %}
+                            <div class="section-status monitoring">
+                                Monitoring
+                            </div>
+                        {% endif %}
+
+                        <button
+                            type="button"
+                            class="remove-button"
+                            data-remove-section="{{ section.registration_index }}"
+                        >
+                            Remove
+                        </button>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p
+                    id="empty-watchlist"
+                    class="empty-watchlist"
+                >
+                    You are not watching any sections yet.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+        <form
+            action="/watchlist"
+            method="post"
+            id="subscription-form"
+            class="save-form"
+        >
+
+            <input
+                type="hidden"
+                name="email"
+                value="{{ email }}"
+            >
+
+            <input
+                type="hidden"
+                name="section_index"
+                id="section-indexes"
+                value="{% for section in watched_sections %}{{ section.registration_index }}{% if not loop.last %},{% endif %}{% endfor %}"
+            >
+
+            <button
+                type="submit"
+                id="submit-watchlist"
+                class="primary-button"
+                {% if not watched_sections %}disabled{% endif %}
+            >
+                Save Watchlist
+            </button>
+
+        </form>
+
+    </section>
+
+</div>
 
 {% endblock %}

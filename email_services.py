@@ -12,6 +12,12 @@ from course_data_search import find_section
 SMTP_EMAIL = os.getenv("SMTP_EMAIL")
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 
+if not SMTP_EMAIL or not SMTP_PASSWORD:
+    try:
+        from secret_key import SMTP_EMAIL, SMTP_PASSWORD
+    except ImportError:
+        raise ImportError("We had an issue loading SMTP_EMAIL and SMTP_PASSWORD from secret_key.py")
+
 def send_course_open_email(email: str, section_index: str):
 
     try:
@@ -57,7 +63,6 @@ def send_course_open_email(email: str, section_index: str):
 
     except Exception as error:
         print(f"Failed to send email to {email}: {error}")
-
 
 
 if __name__ == "__main__": # test script

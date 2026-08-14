@@ -1,145 +1,84 @@
 {% extends "base.html" %}
 
-{% block title %}
-RU Satellite
-{% endblock %}
+{% block title %}RU Satellite{% endblock %}
 
 {% block content %}
 
-<section class="hero-section">
+<div class="main-card home-card">
 
-    <div class="hero-card">
+    <h1>Rutgers Course Monitoring</h1>
 
-        <div class="hero-badge">
-            Rutgers Course Monitoring
-        </div>
+    <p class="subtitle">
+        Enter your email to open your watchlist.
+        RU Satellite will remember it on this device.
+    </p>
 
-        <h1 class="hero-title">
-            Never miss an open section.
-        </h1>
-
-        <p class="hero-subtitle">
-            Enter your email and RU Satellite will load your watchlist
-            or start a new one.
-        </p>
-
-        {% if error %}
-        <div
-            class="message error-message"
-            role="alert"
-        >
+    {% if error %}
+        <div class="message error-message">
             {{ error }}
         </div>
-        {% endif %}
+    {% endif %}
 
-        <form
-            action="/dashboard"
-            method="post"
-            id="email-form"
-            class="email-form"
-        >
+    <form
+        action="/dashboard"
+        method="post"
+        id="email-form"
+    >
 
-            <div class="form-group">
-
-                <label for="email">
-                    Email address
-                </label>
-
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value="{{ email or '' }}"
-                    placeholder="you@example.com"
-                    autocomplete="email"
-                    required
-                >
-
-            </div>
-
-            <div
-                class="hidden-field"
-                aria-hidden="true"
-            >
-                <label for="website">
-                    Website
-                </label>
-
-                <input
-                    type="text"
-                    id="website"
-                    name="website"
-                    autocomplete="off"
-                    tabindex="-1"
-                >
-            </div>
-
-            <label class="human-check">
-
-                <input
-                    type="checkbox"
-                    id="human_check"
-                    name="human_check"
-                    value="yes"
-                    required
-                >
-
-                <span>
-                    I am a human.
-                </span>
-
+        <div class="form-group">
+            <label for="email">
+                Email address
             </label>
 
-            <button
-                type="submit"
-                class="primary-button"
+            <input
+                type="email"
+                id="email"
+                name="email"
+                value="{{ email or '' }}"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
             >
-                Open Dashboard
-            </button>
-
-        </form>
-
-        <div class="hero-features">
-
-            <div class="feature-item">
-                <span class="feature-icon">
-                    ⚡
-                </span>
-
-                <span>
-                    Fast section lookup
-                </span>
-            </div>
-
-            <div class="feature-item">
-                <span class="feature-icon">
-                    📡
-                </span>
-
-                <span>
-                    Automatic monitoring
-                </span>
-            </div>
-
-            <div class="feature-item">
-                <span class="feature-icon">
-                    ✉️
-                </span>
-
-                <span>
-                    Email alerts
-                </span>
-            </div>
-
         </div>
 
-        <p class="privacy-note">
-            No password required. Your email is only used for
-            RU Satellite course alerts.
-        </p>
+        <div class="hidden">
+            <label for="website">
+                Website
+            </label>
 
-    </div>
+            <input
+                type="text"
+                id="website"
+                name="website"
+                tabindex="-1"
+                autocomplete="off"
+            >
+        </div>
 
-</section>
+        <div class="checkbox-row">
+            <input
+                type="checkbox"
+                id="human_check"
+                name="human_check"
+                value="yes"
+                required
+            >
+
+            <label for="human_check">
+                I am human
+            </label>
+        </div>
+
+        <button type="submit" class="primary-button full-button">
+            Open Dashboard
+        </button>
+
+    </form>
+
+    <p class="small-note">
+        No account or password required.
+    </p>
+
+</div>
 
 {% endblock %}
