@@ -127,17 +127,23 @@ def check_sections_for_accounts(all_open_sections_data, subscriptions):
 
             print(f"Section {section} closed again. Alert reset.")
 
-        # Convert lists back into database strings
-        sections_entered_text = ", ".join(sections_entered)
-        notified_sections_text = ", ".join(
-            already_notified_sections
-        )
 
-        edit_subscription(
-            email,
-            sections_entered_text,
-            notified_sections_text,
-        )
+        # Only update the database if a section actually opened or closed
+        if newly_open_sections or newly_closed_sections:
+
+            sections_entered_text = ", ".join(
+                sections_entered
+            )
+
+            notified_sections_text = ", ".join(
+                already_notified_sections
+            )
+
+            edit_subscription(
+                email,
+                sections_entered_text,
+                notified_sections_text,
+                )
 
         if not newly_open_sections:
             print("OPEN SECTIONS: None")

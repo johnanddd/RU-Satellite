@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent
 COURSE_DATABASE = BASE_DIR / "course_data.db"
 SUBSCRIPTION_DATABASE = BASE_DIR / "course_sniper.db"
 
-MAX_WATCHED_SECTIONS = 5
+MAX_WATCHED_SECTIONS = 10
 
 
 # ---------------------------------------------------------
@@ -307,11 +307,6 @@ def get_sections(
 def validate_watchlist(
     sections: list[str],
 ) -> str | None:
-    if not sections:
-        return (
-            "Add at least one section "
-            "before saving."
-        )
 
     if len(sections) > MAX_WATCHED_SECTIONS:
         return (

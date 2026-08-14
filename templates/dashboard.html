@@ -102,29 +102,35 @@
                     <div
                         class="watchlist-item"
                         data-existing-section
-                        data-registration-index="{{ section.registration_index }}"
-                        data-course-code="{{ section.course_code }}"
-                        data-course-title="{{ section.course_title }}"
-                        data-instructors="{{ section.instructors }}"
+                        data-registration-index="{{section.registration_index}}"
+                        data-course-code="{{section.course_code}}"
+                        data-course-title="{{section.course_title }}"
+                        data-instructors="Instructors: {{section.instructors }}"
                     >
+
 
                         <div class="course-title">
                             {{ section.course_title }}
                         </div>
 
                         {% if section.course_code %}
-                            <div class="course-code">
+                            <div class="course-detail">
+                                <strong>COURSE ID:</strong>
                                 {{ section.course_code }}
                             </div>
                         {% endif %}
 
                         <div class="course-detail">
-                            Section {{ section.registration_index }}
+                            <strong>SECTION ID:</strong>
+                            {{ section.registration_index }}
                         </div>
 
                         <div class="course-detail">
+                            <strong>INSTRUCTORS:</strong>
                             {{ section.instructors }}
                         </div>
+
+
 
                         {% if section.notification_sent %}
                             <div class="section-status notified">
@@ -154,7 +160,7 @@
                     id="empty-watchlist"
                     class="empty-watchlist"
                 >
-                    You are not watching any sections yet.
+                    You are not watching any sections... yet.
                 </p>
 
             {% endif %}
@@ -185,7 +191,6 @@
                 type="submit"
                 id="submit-watchlist"
                 class="primary-button"
-                {% if not watched_sections %}disabled{% endif %}
             >
                 Save Watchlist
             </button>

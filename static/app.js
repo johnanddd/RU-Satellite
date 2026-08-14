@@ -175,7 +175,7 @@ function initializeDashboard() {
     }
 
 
-    const MAX_SECTIONS = 5;
+    const MAX_SECTIONS = 10;
 
     const email =
         dashboard.dataset.email || "";
@@ -414,8 +414,7 @@ function initializeDashboard() {
                 .join(",");
 
 
-        saveButton.disabled =
-            watchlist.length === 0;
+        saveButton.disabled = false;
     }
 
 
@@ -432,7 +431,7 @@ function initializeDashboard() {
             MAX_SECTIONS
         ) {
             showMessage(
-                "You can watch a maximum of 5 sections.",
+                "You can watch a maximum of 10 sections.",
                 "error"
             );
 
@@ -735,19 +734,6 @@ function initializeDashboard() {
     watchlistForm.addEventListener(
         "submit",
         event => {
-            if (
-                watchlist.length === 0
-            ) {
-                event.preventDefault();
-
-                showMessage(
-                    "Add at least one section before saving.",
-                    "error"
-                );
-
-                return;
-            }
-
 
             sectionIndexesInput.value =
                 watchlist
