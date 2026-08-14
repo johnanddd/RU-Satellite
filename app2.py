@@ -10,6 +10,7 @@ from fastapi.templating import Jinja2Templates
 
 from coursesniper5 import start_course_sniper
 from database import (
+    DATABASE_NAME,
     add_subscription,
     create_database,
     edit_subscription,
@@ -25,7 +26,7 @@ from database import (
 BASE_DIR = Path(__file__).resolve().parent
 
 COURSE_DATABASE = BASE_DIR / "course_data.db"
-SUBSCRIPTION_DATABASE = BASE_DIR / "course_sniper.db"
+SUBSCRIPTION_DATABASE = DATABASE_NAME
 
 MAX_WATCHED_SECTIONS = 10
 

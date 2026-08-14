@@ -1,3 +1,4 @@
+import os
 import sqlite3
 from pathlib import Path
 
@@ -7,7 +8,18 @@ from pathlib import Path
 # ---------------------------------------------------------
 
 BASE_DIR = Path(__file__).resolve().parent
-DATABASE_NAME = BASE_DIR / "course_sniper.db"
+
+DATABASE_NAME = Path(
+    os.environ.get(
+        "RU_SATELLITE_DB_PATH",
+        str(BASE_DIR / "course_sniper.db"),
+    )
+)
+
+DATABASE_NAME.parent.mkdir(
+    parents=True,
+    exist_ok=True,
+)
 
 
 # ---------------------------------------------------------
