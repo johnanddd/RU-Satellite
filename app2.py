@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent
 COURSE_DATABASE = BASE_DIR / "course_data.db"
 SUBSCRIPTION_DATABASE = DATABASE_NAME
 
-MAX_WATCHED_SECTIONS = 10
+MAX_WATCHED_SECTIONS = 20
 
 
 # ---------------------------------------------------------

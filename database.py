@@ -2,6 +2,17 @@ import os
 import sqlite3
 from pathlib import Path
 
+"""
+How to display in Render's Shell:
+
+sqlite3 /var/data/course_sniper.db
+.headers on
+.mode column
+SELECT * FROM subscriptions;
+"""
+
+
+
 
 # ---------------------------------------------------------
 # Database configuration
