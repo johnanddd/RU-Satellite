@@ -33,19 +33,46 @@ def send_course_open_email(email: str, section_index: str):
 
         message["From"] = SMTP_EMAIL
         message["To"] = email
-        message["Subject"] = f"SECTION OPENING"
+        message["Subject"] = f"SECTION OPENING: {section_index}"
 
         html = f"""
-        <h2>🚨 A section has opened! 🚨</h2>
-        <p>{course_title} ({course_code})</p>
-        <p>Section Index: {section_index}</p>
-        <p>REGISTER HERE: https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=92026&indexList={section_index} </p>
-        <p>Time sent: {time_sent}</p>
-        <hr>
-        <p>If it closes, we'll notifiy you again when it opens.</p>
-        <p>🛰️Thank you for using RU Satellite!🛰️</p>
-        """
+            <h2>🚨 Section {section_index} has opened! 🚨</h2>
 
+            <p><strong>{course_title} ({course_code})</strong></p>
+
+            <p>
+                <strong>REGISTER HERE:</strong><br>
+                <a href="https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=92026&indexList={section_index}" target="_blank">
+                    https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=92026&indexList={section_index}
+                </a>
+
+                <br><br>
+
+                <span style="font-size: 12px;">
+                    Then click "ADD COURSES."
+                </span>
+            </p>
+
+            <br><br>
+
+            <div style="font-size: 12px; color: #666;">
+                <p>Time sent: {time_sent}</p>
+
+                <p>If the section closes, we'll notify you again when it opens.</p>
+
+                <p>
+                    Want to change or remove your monitored sections?<br>
+                    <a href="https://ru-satellite.onrender.com">
+                        Manage your RU Satellite watchlist
+                    </a>
+                </p>
+
+                <hr>
+
+                <p>🛰️ Thanks for using RU Satellite! 🛰️</p>
+            </div>
+        """
+        
         message.attach(MIMEText(html, "html"))
 
         server = smtplib.SMTP("smtp.gmail.com", 587)
@@ -67,7 +94,7 @@ def send_course_open_email(email: str, section_index: str):
 
 if __name__ == "__main__": # test script
     from secret_key import SMTP_EMAIL, SMTP_PASSWORD
-    send_course_open_email("johnanddd2007@gmail.com", "17387")
+    send_course_open_email("johnanddd2007@gmail.com", "17479")
     print("Email sent!")
-
+    
 
