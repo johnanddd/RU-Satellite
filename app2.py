@@ -18,6 +18,7 @@ from database import (
 )
 
 # python -m uvicorn app2:app --reload
+# http://127.0.0.1:8000/
 
 # ---------------------------------------------------------
 # Configuration

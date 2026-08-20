@@ -305,7 +305,7 @@ function initializeDashboard() {
 
             const statusText =
                 section.notification_sent
-                    ? "Alert already sent"
+                    ? "Alert sent"
                     : "Monitoring";
 
 

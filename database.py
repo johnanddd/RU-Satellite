@@ -1,6 +1,7 @@
 import os
 import sqlite3
 from pathlib import Path
+from email_services import send_welcome_email
 
 """
 How to display in Render's Shell:
@@ -196,6 +197,8 @@ def add_subscription(
             connection.commit()
 
         print(f"{email} added to RU Satellite.")
+        # welcome email function here 
+        send_welcome_email(email)
         return True
 
     except sqlite3.Error as error:

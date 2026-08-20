@@ -18,6 +18,56 @@ if not SMTP_EMAIL or not SMTP_PASSWORD:
     except ImportError:
         raise ImportError("We had an issue loading SMTP_EMAIL and SMTP_PASSWORD from secret_key.py")
 
+def send_welcome_email(email: str):
+
+    try:
+        message = MIMEMultipart()
+
+        message["From"] = f"RU Satellite <{SMTP_EMAIL}>"
+        message["To"] = email
+        message["Subject"] = "Welcome to RU Satellite! 🛰️"
+
+        html = """
+            <h2>Your watchlist is now active! 🛰️</h2>
+
+            <p>Your email has been added to RU Satellite.</p>
+
+            <p>
+                Your watchlist is now active in our database, and you'll receive an email here
+                whenever one of your monitored sections opens.
+            </p>
+
+            <p>
+                <a href="https://ru-satellite.onrender.com">
+                    Manage your watchlist
+                </a>
+            </p>
+
+            <p style="font-size: 12px; color: #666;">
+                You're receiving this because this email was used to create an RU Satellite watchlist.
+            </p>
+        """
+
+        message.attach(MIMEText(html, "html"))
+
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()
+        server.login(SMTP_EMAIL, SMTP_PASSWORD)
+
+        server.sendmail(
+            SMTP_EMAIL,
+            email,
+            message.as_string()
+        )
+
+        print(f"Welcome email sent to {email}")
+
+        server.quit()
+
+    except Exception as error:
+        print(f"Failed to send thank you email to {email}: {error}")
+
+
 def send_course_open_email(email: str, section_index: str):
 
     try:
@@ -31,7 +81,7 @@ def send_course_open_email(email: str, section_index: str):
 
         message = MIMEMultipart()
 
-        message["From"] = SMTP_EMAIL
+        message["From"] = f"RU Satellite <{SMTP_EMAIL}>"
         message["To"] = email
         message["Subject"] = f"SECTION OPENING: {section_index}"
 
@@ -93,8 +143,11 @@ def send_course_open_email(email: str, section_index: str):
 
 
 if __name__ == "__main__": # test script
+    target = "johnanddd2007@gmail.com"
     from secret_key import SMTP_EMAIL, SMTP_PASSWORD
-    send_course_open_email("johnanddd2007@gmail.com", "17479")
-    print("Email sent!")
+
+    send_welcome_email(target)
+    send_course_open_email(target, "17479")
+    print("Emails sent!")
     
 
