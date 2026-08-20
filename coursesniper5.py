@@ -48,6 +48,7 @@ def get_all_open_sections(session, api_ping_count, params):
 
         if response_status == 200:
             all_open_sections_data = response.json()
+            response.close()
             return all_open_sections_data, api_ping_count, response_status, response_time
         else:
             api_end_time = time.perf_counter()
