@@ -175,7 +175,7 @@ function initializeDashboard() {
     }
 
 
-    const MAX_SECTIONS = 20;
+    const MAX_SECTIONS = 50;
 
     const email =
         dashboard.dataset.email || "";
@@ -431,7 +431,7 @@ function initializeDashboard() {
             MAX_SECTIONS
         ) {
             showMessage(
-                "You can watch a maximum of 20 sections.",
+                "You can watch a maximum of 50 sections.",
                 "error"
             );
 
