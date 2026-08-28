@@ -9,7 +9,7 @@ All completely for free for no payments, unlike a lot of other Rutgers snipers.
 
 ## Features
 
-* Monitor up to 20 Rutgers sections at once
+* Monitor up to 50 Rutgers sections at once
 * Fast automatic course availability checks
 * Email alerts when a section opens
 * Direct WebReg registration link in alerts
