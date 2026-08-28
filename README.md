@@ -24,7 +24,7 @@ RU Satellite periodically checks Rutgers' course availability data and compares 
 When a monitored section opens:
 
 1. RU Satellite detects the opening
-2. The section is marked as already notified
+2. The section is marked as notified
 3. An email is immediately sent to the user
 4. If the section later closes, the alert resets so the user can be notified the next time it opens
 
@@ -36,7 +36,7 @@ When a monitored section opens:
 * HTML / CSS / JavaScript
 * Gmail SMTP
 * Render
-* Rutgers Schedule of Classes data
+* Rutgers Webreg and Course Schedule Planner data
 
 ## Project Structure
 
