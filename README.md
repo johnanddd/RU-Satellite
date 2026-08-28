@@ -1,6 +1,6 @@
 # RU Satellite
 
-RU Satellite is a free Rutgers course monitoring website I made that alerts students when a closed section opens.
+RU Satellite is a 100% free Rutgers course monitoring website I made that alerts students when a closed section opens.
 
 Students can currently monitor up to **20 sections per email**, and RU Satellite checks Rutgers course availability continuously and sends an email alert when one of their watched sections becomes available.
 All completely for free for no payments, unlike a lot of other Rutgers snipers.
