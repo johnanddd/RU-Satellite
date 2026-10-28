@@ -12,6 +12,9 @@ from pathlib import Path
 from database import create_database, get_subscriptions, edit_subscription
 from email_services import send_course_open_email
 
+testvalue = 1
+test = testvalue + 1
+
 
 def print_divider():
     print(f"---------------------------------------------")
